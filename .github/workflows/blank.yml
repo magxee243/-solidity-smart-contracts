@@ -1,0 +1,37 @@
+name: Build Project
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup project
+        run: |
+          git config user.email "magxee369@proton.me"
+          git config user.name "magxee243"
+
+          echo "# Solidity Smart Contracts" > README.md
+          echo "Learning smart contract development" >> README.md
+          git add . && git commit -m "initial setup"
+
+          mkdir -p contracts
+          echo "// SPDX-License-Identifier: MIT" > contracts/Token.sol
+          echo "pragma solidity ^0.8.0;" >> contracts/Token.sol
+          git add . && git commit -m "add basic token contract"
+
+          echo "// ERC20 basic structure" >> contracts/Token.sol
+          git add . && git commit -m "add ERC20 structure"
+
+          echo "contract Token {}" >> contracts/Token.sol
+          git add . && git commit -m "add token contract body"
+
+          for i in $(seq 1 96)
+          do
+            echo "// update $i" >> contracts/Token.sol
+            git add . && git commit -m "contract update $i"
+          done
+
+      - name: Push changes
+        run: git push
